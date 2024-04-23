@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Bem-vindo, @ViewBag.Name!</h2>
+                        <h3 class="card-subtitle mb-4">Saldo atual: R$ @ViewBag.Balance.ToString("F2")</h3>
+
+                        @using (Html.BeginForm("InitializeBalance", "Account", FormMethod.Post))
+                        {
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="amount" name="amount" onkeypress="validateNumberInput(event)" required>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary" disabled="@(ViewBag.Balance != 0)">Iniciar Saldo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @using (Html.BeginForm("CashIn", "Account", FormMethod.Post))
+                        {
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="addAmount" name="addAmount" onkeypress="validateNumberInput(event)" required>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-success">Adicionar Saldo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @using (Html.BeginForm("CashOut", "Account", FormMethod.Post))
+                        {
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="removeAmount" name="removeAmount" onkeypress="validateNumberInput(event)" required>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-danger">Remover Saldo&nbsp</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @using (Html.BeginForm("Reset", "Account", FormMethod.Post))
+                        {
+                            <br />
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-warning">Resetar Planejamento</button>
+                            </div>
+                            <br/>
+                        }
+
+                        <h3>Entradas: </h3>
+                        <h3><span class="text-success">R$@ViewBag.CashInBalance.ToString("F2")</span></h3>
+                        <h3>Saídas: </h3>
+                        <h3><span class="text-danger">R$ @ViewBag.CashOutBalance.ToString("F2")</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateNumberInput(event) {
+            const keyCode = event.keyCode;
+            if ((keyCode < 48 || keyCode > 57) && keyCode !== 44 && keyCode !== 46 && keyCode !== 8 && keyCode !== 9 && keyCode !== 37 && keyCode !== 39) {
+                event.preventDefault();
+            }
+        }
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
